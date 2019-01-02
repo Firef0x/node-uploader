@@ -1,0 +1,46 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies
+ */
+
+const os = require('os');
+const app = require('./app');
+const config = require('../config/config');
+const pkg = require('../package.json');
+
+app.set('port', config.port);
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  const bind = (typeof config.port === 'string')
+    ? `Pipe ${config.port}` : `Port ${config.port}`;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+
+  }
+}
+
+/**
+ * Create HTTP server.
+ */
+function startServer() {
+  const http = require('http');
+  const server = http.createServer(app);
+  server.listen(config.port, function () {
+    console.log(`HTTP server is listening on port ${config.port}`);
+  });
+  // No timeout by default
+  server.timeout = 5000000000;
+  server.on('error', onError);
+};
+
+startServer();

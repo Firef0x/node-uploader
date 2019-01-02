@@ -1,0 +1,84 @@
+/* eslint-disable global-require */
+
+'use strict';
+
+const feathers = require('@feathersjs/feathers');
+const express = require('@feathersjs/express');
+const path = require('path');
+const config = require('../config/config');
+const routes = require('./routes');
+
+const app = express(feathers());
+
+if (config.buildType !== 'production') {
+  const webpack = require('webpack');
+  const configType = 'dev';
+  const wpConfig = require(`../config/webpack.${configType}.js`);
+  console.log(`Using webpack config: ${configType}`);
+
+  const compiler = webpack(wpConfig);
+  console.log(`webpack: ${wpConfig.output.publicPath}`);
+  app.use(require('webpack-dev-middleware')(compiler, {
+    noInfo: true,
+    quiet: false,
+    publicPath: wpConfig.output.publicPath
+  }))
+    .use(require('webpack-hot-middleware')(compiler, {
+      log: console.log,
+      heartbeat: 10 * 1000
+    }));
+}
+
+// Remove file size limit in Feathers
+app.use(express.json({
+  limit: '300mb'
+}));
+app.use(express.urlencoded({
+  extended: true,
+  limit: '300mb'
+}));
+
+// Remove X-Powered-By header
+app.disable('x-powered-by');
+
+
+// view engine setup
+app.set('views', path.join(__dirname, '../views'));
+app.set('view engine', 'hbs');
+
+routes.init(app);
+
+/* redirect to in-memory build of app
+   i.e. proxy all routes to client
+   must be initialized after routes and dev/hot middleware
+ */
+if (config.buildType !== 'production') {
+  app.use('*', (req, res, next) => {
+    const filename = path.join(config.output.path, 'index.html');
+    compiler.outputFileSystem.readFile(filename, (err, result) => {
+      if (err) {
+        return next(err);
+      }
+      res.set('content-type', 'text/html');
+      res.send(result);
+      res.end();
+    });
+  });
+}
+
+app.use((req, res, next) => {
+  const err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message || 'Error has occured',
+    error: err
+  });
+});
+
+
+module.exports = app;

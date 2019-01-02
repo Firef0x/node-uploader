@@ -1,0 +1,19 @@
+{
+  "env": {
+    "test": {
+      "presets": [
+        ["env", {
+          "targets": {
+            "browsers": [
+              "last 2 versions",
+              "not ie <= 8",
+              "not op_mini all"
+            ]
+          }
+        }],
+        "react",
+        "jest"
+      ]
+    }
+  },
+}
