@@ -24,6 +24,6 @@ exports.dataInput = (req, res) => {
       return console.log(err);
     }
     // 文件信息在req.file或者req.files中显示。
-    res.send(200);
+    res.sendStatus(200);
   });
 };

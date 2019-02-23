@@ -12,6 +12,7 @@ test/coverage
 
 # production
 /build
+/public
 
 # misc
 .DS_Store
@@ -41,3 +42,4 @@ $Recycle.Bin
 
 # Test Report
 test-report.html
+/mochawesome-report

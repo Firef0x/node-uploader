@@ -1,13 +1,12 @@
-/* eslint-disable global-require */
+/* eslint-disable global-require,import/no-dynamic-require */
 
-'use strict';
 
 const configSingleton = (() => {
   // Instance stores a reference to the Singleton
   let instance;
 
   function init() {
-    process.env.NPCONFIG = process.env.NPCONFIG || 'default';
+    process.env.NPCONFIG = process.env.NPCONFIG || 'prod';
 
     const cfType = `.${process.env.NPCONFIG}`;
 

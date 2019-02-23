@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
   Upload,
@@ -9,7 +9,7 @@ import './FileUpload.less';
 
 const { Dragger } = Upload;
 
-export default class FileUpload extends Component {
+export default class FileUpload extends PureComponent {
   constructor(props) {
     super(props);
     this.beforeUpload = this.beforeUpload.bind(this);
@@ -24,6 +24,7 @@ export default class FileUpload extends Component {
     this.setState({
       fileList: []
     });
+    message.info('文件已移除.');
   }
 
   // 上传之前事件
@@ -35,6 +36,7 @@ export default class FileUpload extends Component {
     this.setState({
       fileList: fileArr
     });
+    console.log(fileArr);
   }
 
   render() {
@@ -47,24 +49,25 @@ export default class FileUpload extends Component {
       beforeUpload: this.beforeUpload,
       fileList,
       onChange(info) {
-        const { status } = info.file;
-        if (status !== 'uploading') {
+        const { name, status } = info.file;
+        if (status === 'uploading') {
+          const hide = message.loading(`${name} 文件正在上传中...`, 0);
+          // Dismiss manually and asynchronously
+          setTimeout(hide, 3000);
+        } else {
           console.log(info.file, info.fileList);
-        }
-        if (status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully.`);
-        } else if (status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
+          if (status === 'done') {
+            message.success('文件上传成功.');
+          } else if (status === 'error') {
+            message.error('文件上传失败.');
+          }
         }
       },
       onRemove: this.onRemove,
     };
 
     return (
-      <div style={{
-        marginTop: 16,
-        height: 250
-      }}>
+      <div className="dragger-block">
         <Dragger {...uploadProp}>
           <p className="ant-upload-drag-icon">
             <Icon type="inbox" />

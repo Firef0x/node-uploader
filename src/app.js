@@ -1,14 +1,15 @@
 /* eslint-disable global-require */
-
-'use strict';
+/* eslint-disable import/no-dynamic-require */
 
 const feathers = require('@feathersjs/feathers');
 const express = require('@feathersjs/express');
+const favicon = require('serve-favicon');
 const path = require('path');
 const config = require('../config/config');
 const routes = require('./routes');
 
 const app = express(feathers());
+let compiler;
 
 if (config.buildType !== 'production') {
   const webpack = require('webpack');
@@ -16,7 +17,7 @@ if (config.buildType !== 'production') {
   const wpConfig = require(`../config/webpack.${configType}.js`);
   console.log(`Using webpack config: ${configType}`);
 
-  const compiler = webpack(wpConfig);
+  compiler = webpack(wpConfig);
   console.log(`webpack: ${wpConfig.output.publicPath}`);
   app.use(require('webpack-dev-middleware')(compiler, {
     noInfo: true,
@@ -43,8 +44,11 @@ app.disable('x-powered-by');
 
 
 // view engine setup
-app.set('views', path.join(__dirname, '../views'));
+app.set('views', path.join(__dirname, '..', 'views'));
 app.set('view engine', 'hbs');
+
+// Setting favicon
+app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
 
 routes.init(app);
 
@@ -79,6 +83,5 @@ app.use((err, req, res, next) => {
     error: err
   });
 });
-
 
 module.exports = app;

@@ -39,7 +39,7 @@ function startServer() {
     console.log(`HTTP server is listening on port ${config.port}`);
   });
   // No timeout by default
-  server.timeout = 5000000000;
+  server.timeout = 2147483646;
   server.on('error', onError);
 };
 

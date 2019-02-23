@@ -1,6 +1,6 @@
 {
-  "short_name": "File Upload",
-  "name": "File Upload",
+  "short_name": "Node Uploader",
+  "name": "Node Uploader",
   "icons": [
     {
       "src": "favicon.ico",

@@ -1,9 +1,16 @@
 module.exports = {
   collectCoverageFrom: [
-    'client-react/components/**/*.{js,jsx}'
+    '<rootDir>/client-react/components/**/*.{js,jsx}',
+    '!**/*.spec.{js,jsx}',
+    '!**/*.test.{js,jsx}'
   ],
-  coveragePathIgnorePatterns: [],
-  setupFiles: [],
+  coverageDirectory: '<rootDir>/coverage/',
+  coveragePathIgnorePatterns: [
+    '/node_modules/',
+    '/stories/',
+    '.*\\.config\\.js',
+    '.*\\.setup\\.js'
+  ],
   testMatch: [
     '<rootDir>/client-react/components/**/?(*.)(test|spec).js?(x)',
     '<rootDir>/client-react/components/**/__tests__/**/*.js?(x)'
@@ -13,7 +20,6 @@ module.exports = {
   transform: {
     '^.+\\.jsx?$': 'babel-jest'
   },
-  transformIgnorePatterns: [],
   moduleNameMapper: {
     '\\.(css|less|sass|scss)$': '<rootDir>/__mocks__/styleMock.js',
     '\\.(jpe?g|gif|png|svg|ttf|eot|otf|woff|woff2)$': '<rootDir>/__mocks__fileMock.js'
@@ -25,12 +31,20 @@ module.exports = {
     'web.jsx',
     'jsx'
   ],
-  setupTestFrameworkScriptFile: './node_modules/jest-enzyme/lib/index.js',
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  snapshotSerializers: ['enzyme-to-json/serializer'],
+  testPathIgnorePatterns: [
+    '<rootDir>/build/',
+    '<rootDir>/config/',
+    '<rootDir>/coverage/',
+    '<rootDir>/docs/',
+    '<rootDir>/node_modules/'
+  ],
+  testResultsProcessor: './node_modules/jest-html-reporter',
   unmockedModulePathPatterns: [
     'react',
     'enzyme',
     'jest-enzyme'
   ],
-  verbose: true,
-  testResultsProcessor: './node_modules/jest-html-reporter'
+  verbose: true
 };

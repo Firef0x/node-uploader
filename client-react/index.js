@@ -3,9 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.less';
 import FileUpload from './components/FileUpload/index';
 import * as serviceWorker from './serviceWorker';
+import ApplicationHeader from './components/ApplicationHeader';
 
 const component = (
-  <FileUpload />
+  <div>
+    <ApplicationHeader title="Node Uploader" />
+    <FileUpload />
+  </div>
 );
 const appDiv = document.getElementById('root');
 

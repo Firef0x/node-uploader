@@ -2,7 +2,6 @@ import React from 'react';
 
 import { storiesOf } from '@storybook/react';
 import { text } from '@storybook/addon-knobs';
-import logAction from '../logAction';
 
 import FileUpload from '../../client-react/components/FileUpload/index';
 

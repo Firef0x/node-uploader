@@ -1,4 +1,4 @@
-'use strict';
+
 
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -26,7 +26,7 @@ const configWebpack = {
     ]
   },
   output: {
-    path: `${__dirname}/../public`,
+    path: path.join(__dirname, '..', 'public'),
     filename: 'js/[name].[hash].js',
     publicPath: '/'
   },
