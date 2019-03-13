@@ -4,10 +4,14 @@
  * Module dependencies
  */
 
+const http = require('http');
 const os = require('os');
 const app = require('./app');
 const config = require('../config/config');
 const pkg = require('../package.json');
+
+const STD_CONSOLE_LOG = console.log;
+const STD_CONSOLE_ERR = console.error;
 
 app.set('port', config.port);
 
@@ -25,7 +29,16 @@ function onError(error) {
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
-
+      STD_CONSOLE_ERR(`${bind} requires elevated privileges.`);
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      STD_CONSOLE_ERR(`${bind} is already in use`);
+      process.exit(1);
+      break;
+    default:
+      STD_CONSOLE_ERR(`${error.code} error!`);
+      throw error;
   }
 }
 
@@ -33,14 +46,23 @@ function onError(error) {
  * Create HTTP server.
  */
 function startServer() {
-  const http = require('http');
   const server = http.createServer(app);
-  server.listen(config.port, function () {
-    console.log(`HTTP server is listening on port ${config.port}`);
+  server.listen(config.port, () => {
+    STD_CONSOLE_LOG(`HTTP server is listening on port ${config.port}`);
   });
   // No timeout by default
   server.timeout = 2147483646;
   server.on('error', onError);
-};
+}
+
+/**
+ * Print the information for bootup
+ */
+/* eslint-disable max-len */
+function printBootupInfo() {
+  STD_CONSOLE_LOG(`CPUs: ${os.cpus().length} thread size should be: ${Math.ceil(Math.max(4, os.cpus().length * 1.5))}`);
+  STD_CONSOLE_LOG(`Node Uploader v${pkg.version} Date: ${new Date()} Node.js ${process.version} server started on ${os.hostname()}:${config.port} with thread pool size: ${process.env.UV_THREADPOOL_SIZE}`);
+}
 
 startServer();
+printBootupInfo();

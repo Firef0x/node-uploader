@@ -11,8 +11,8 @@
   },
   "author": "Firef0x",
   "engines": {
-    "node": ">= 6.0.0",
-    "npm": ">= 4.0.0"
+    "node": ">= 8.0.0",
+    "npm": ">= 5.0.0"
   },
   "scripts": {
     "build": "npm run clean && npm run copyStatic && cross-env NODE_ENV=production webpack --progress --config config/webpack.prod.js",
