@@ -1,14 +1,12 @@
-/* eslint-disable global-require */
-/* eslint-disable import/no-dynamic-require */
+/* eslint-disable global-require,import/no-dynamic-require */
 
-const feathers = require('@feathersjs/feathers');
-const express = require('@feathersjs/express');
+const express = require('express');
 const favicon = require('serve-favicon');
 const path = require('path');
 const config = require('../config/config');
 const routes = require('./routes');
 
-const app = express(feathers());
+const app = express();
 let compiler;
 
 if (config.buildType !== 'production') {
@@ -33,15 +31,15 @@ if (config.buildType !== 'production') {
 // Remove file size limit in Feathers
 app.use(express.json({
   limit: '300mb'
-}));
-app.use(express.urlencoded({
-  extended: true,
-  limit: '300mb'
-}));
+}))
+  .use(express.urlencoded({
+    extended: true,
+    limit: '300mb'
+  }))
+  .use(express.static(path.join(__dirname, '..', 'public')));
 
 // Remove X-Powered-By header
 app.disable('x-powered-by');
-
 
 // view engine setup
 app.set('views', path.join(__dirname, '..', 'views'));

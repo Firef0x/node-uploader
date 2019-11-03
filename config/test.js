@@ -1,9 +1,10 @@
-'use strict';
+
 
 const jest = require('jest');
 
 process.env.BABEL_ENV = 'test';
 process.env.NODE_ENV = 'test';
+process.env.NPCONFIG = 'dev';
 
 process.on('unhandledRejection', (err) => { throw err; });
 
