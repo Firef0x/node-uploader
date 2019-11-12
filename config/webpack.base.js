@@ -1,8 +1,6 @@
-
-
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const webpack = require('webpack');
 
 const babelPresets = [
   ['@babel/env', {
@@ -21,7 +19,6 @@ const babelPresets = [
 const configWebpack = {
   entry: {
     app: [
-      '@babel/polyfill',
       './client-react/index.js'
     ]
   },
@@ -53,7 +50,7 @@ const configWebpack = {
     new HtmlWebpackPlugin({
       hash: true,
       title: 'Node Uploader',
-      template: `${__dirname}/../client-react/index.tpl.html`,
+      template: path.join(__dirname, '..', 'client-react', 'index.tpl.html'),
       filename: './index.html',
       chunks: ['manifest', 'vendor', 'app']
     }),

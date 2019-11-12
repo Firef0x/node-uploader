@@ -61,7 +61,7 @@ function startServer() {
 /* eslint-disable max-len */
 function printBootupInfo() {
   STD_CONSOLE_LOG(`CPUs: ${os.cpus().length} thread size should be: ${Math.ceil(Math.max(4, os.cpus().length * 1.5))}`);
-  STD_CONSOLE_LOG(`Node Uploader v${pkg.version} Date: ${new Date()} Node.js ${process.version} server started on ${os.hostname()}:${config.port} with thread pool size: ${process.env.UV_THREADPOOL_SIZE}`);
+  STD_CONSOLE_LOG(`Node Uploader v${pkg.version} Date: ${new Date()} Node.js ${process.version} server started on ${os.hostname()}:${config.port}`);
 }
 
 startServer();

@@ -1,9 +1,8 @@
-'use strict';
-
-const webpack = require('webpack');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
 
 const configBase = require('./webpack.base');
 const pkgs = require('../package.json');
@@ -17,7 +16,7 @@ console.log(`Building with hash: ${versionHash}`);
 configWebpack.mode = 'development';
 
 configWebpack.output = {
-  path: `${__dirname}/../public`,
+  path: path.join(__dirname, '..', 'public'),
   chunkFilename: `build/js/[name].js?${versionHash}`,
   filename: 'build/js/[name].js'
 };

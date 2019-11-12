@@ -1,15 +1,13 @@
-'use strict';
-
 const webpack = require('webpack');
-const forEach = require('lodash.foreach');
 
 const configBase = require('./webpack.base');
 
 const { babelPresets, configWebpack } = configBase;
 
-forEach(configWebpack.entry, (entry) => {
-  entry.push('react-hot-loader/patch', 'webpack-hot-middleware/client');
-});
+configWebpack.entry.app.push(
+  'react-hot-loader/patch',
+  'webpack-hot-middleware/client'
+);
 
 configWebpack.mode = 'development';
 
