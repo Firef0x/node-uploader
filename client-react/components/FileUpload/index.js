@@ -15,8 +15,24 @@ export default class FileUpload extends PureComponent {
     this.beforeUpload = this.beforeUpload.bind(this);
     this.onRemove = this.onRemove.bind(this);
     this.state = {
-      fileList: [], // 文件列表
+      fileList: [] // 文件列表
     };
+  }
+
+  static onChange(info) {
+    const { name, status } = info.file;
+    if (status === 'uploading') {
+      const hide = message.loading(`${name} 文件正在上传中...`, 0);
+      // Dismiss manually and asynchronously
+      setTimeout(hide, 3000);
+    } else {
+      console.log(info.file, info.fileList);
+      if (status === 'done') {
+        message.success('文件上传成功.');
+      } else if (status === 'error') {
+        message.error('文件上传失败.');
+      }
+    }
   }
 
   // 移除文件
@@ -45,24 +61,10 @@ export default class FileUpload extends PureComponent {
     const uploadProp = {
       name: 'uploadFile',
       multiple: true,
-      action: 'http://localhost:3000/upload',
+      action: '/upload',
       beforeUpload: this.beforeUpload,
       fileList,
-      onChange(info) {
-        const { name, status } = info.file;
-        if (status === 'uploading') {
-          const hide = message.loading(`${name} 文件正在上传中...`, 0);
-          // Dismiss manually and asynchronously
-          setTimeout(hide, 3000);
-        } else {
-          console.log(info.file, info.fileList);
-          if (status === 'done') {
-            message.success('文件上传成功.');
-          } else if (status === 'error') {
-            message.error('文件上传失败.');
-          }
-        }
-      },
+      onChange: FileUpload.onChange,
       onRemove: this.onRemove,
     };
 
