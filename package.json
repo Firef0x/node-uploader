@@ -22,7 +22,7 @@
     "clean": "rimraf public",
     "copyStatic": "cpx \"static/**/*.*\" public/",
     "dev": "npm run copyStatic && cross-env NODE_ENV=development NPCONFIG=dev node --inspect src/www",
-    "lint": "eslint --ext .js,.jsx client-react src stories",
+    "lint": "eslint --ext .js,.jsx -f ./node_modules/eslint-html-reporter/reporter.js -o lint-report.html client-react src stories",
     "start": "cross-env NODE_ENV=production node src/www",
     "startProd": "npm run copyStatic && cross-env NODE_ENV=production node src/www",
     "test": "node config/test.js",
