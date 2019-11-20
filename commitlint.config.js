@@ -6,9 +6,10 @@ module.exports = {
       2,
       'always',
       [
+        'chore',
+        'docs',
         'feat',
         'fix',
-        'docs',
         'merge',
         'refactor',
         'revert',
